@@ -91,7 +91,7 @@ def main():
 
     logger.debug('Starting simulation. Waiting for user...', extra=extra)
 
-    while time() - started_at >= TIME_SIMULATION:
+    while time() - started_at < TIME_SIMULATION:
         waiting_time = uniform(*TIME_REQUEST_PERIOD)
         sleep(waiting_time)
 

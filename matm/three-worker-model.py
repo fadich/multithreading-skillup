@@ -104,19 +104,7 @@ if __name__ == '__main__':
 
     logger.info('Starting simulation. Waiting for user...', extra=extra)
 
-    while True:
-        if time() - started_at >= TIME_SIMULATION:
-            print('<SIMULATION STOPPED>')
-
-            with stop_lock:
-                worker_thread.join()
-                print('Worker thread joined.')
-                e_terminal_thread.join()
-                print('Educational Terminal thread joined.')
-                t_terminal_thread.join()
-                print('Technical Terminal thread joined.')
-
-            break
+    while time() - started_at < TIME_SIMULATION:
 
         waiting_time = uniform(*TIME_REQUEST_PERIOD)
         sleep(waiting_time)
@@ -133,6 +121,16 @@ if __name__ == '__main__':
         logger.info('New user request. Waiting time - {:.2f}. Task - {}'.format(
                 waiting_time, TASK_TYPES[task]
             ), extra=extra)
+
+    print('<SIMULATION STOPPED>')
+
+    with stop_lock:
+        worker_thread.join()
+        print('Worker thread joined.')
+        e_terminal_thread.join()
+        print('Educational Terminal thread joined.')
+        t_terminal_thread.join()
+        print('Technical Terminal thread joined.')
 
     logger.info('''Simulation completed.
 
