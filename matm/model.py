@@ -91,22 +91,7 @@ def main():
 
     logger.debug('Starting simulation. Waiting for user...', extra=extra)
 
-    while True:
-        if time() - started_at >= TIME_SIMULATION:
-            print('<SIMULATION STOPPED>')
-
-            with stop_lock:
-                e_terminal_thread.join()
-                print('Educational Terminal thread joined.')
-
-                # e2_terminal_thread.join()
-                # print('Educational 2 Terminal thread joined.')
-
-                t_terminal_thread.join()
-                print('Technical Terminal thread joined.')
-
-            break
-
+    while time() - started_at >= TIME_SIMULATION:
         waiting_time = uniform(*TIME_REQUEST_PERIOD)
         sleep(waiting_time)
 
@@ -124,8 +109,19 @@ def main():
                 waiting_time, TASK_TYPES[task]
             ), extra=extra)
 
-    logger.info('''Simulation completed.
+    print('<SIMULATION COMPLETED>')
 
+    with stop_lock:
+        e_terminal_thread.join()
+        print('Educational Terminal thread joined.')
+
+        # e2_terminal_thread.join()
+        # print('Educational 2 Terminal thread joined.')
+
+        t_terminal_thread.join()
+        print('Technical Terminal thread joined.')
+
+    logger.info('''
     Details:
      - Educational terminal queue len = {}.
      - Technical terminal queue len = {}.
